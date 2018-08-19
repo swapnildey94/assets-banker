@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "AssetsBankerLoanApplication",
+    "SubjectPart": "Assets Banker Loan Application: {{applicationId}}!",
+    "HtmlPart": "<h1>Hello {{contact.fullName}},</h1><p>Thank you for applying for {{contact.loanType}}.</p>",
+    "TextPart": "Dear {{contact.fullName}},\r\nThank you for applying for {{contact.loanType}}."
+  }
+}
