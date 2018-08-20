@@ -71,6 +71,7 @@ class ApplyNow extends React.Component {
             assetDetails: {
                 name: '',
                 type: '',
+                nameOfType: '',
                 nameOfAsset: '',
                 ageInYears: '',
                 workingCondition: '',
@@ -84,7 +85,7 @@ class ApplyNow extends React.Component {
                 material: '',
                 originalStrap: '',
                 files: [],
-                desiredAmount: 0
+                estimatedValue: 0
             },
             assets: AssetInfo,
             values: {
@@ -95,7 +96,9 @@ class ApplyNow extends React.Component {
                 applicantType: '',
                 address: '',
                 loanType: '',
-                loanPurpose: ''
+                loanPurpose: '',
+                loanAmount: 0,
+                businessName: ''
             },
             touched: {}
         };
@@ -191,7 +194,7 @@ class ApplyNow extends React.Component {
             brand: assetDetails.brand,
             description: assetDetails.description,
             files: [],
-            desiredAmount: assetDetails.desiredAmount
+            estimatedValue: assetDetails.estimatedValue
         }; */
 
         let assetInfo = _.cloneDeep(assetDetails);
@@ -321,6 +324,10 @@ class ApplyNow extends React.Component {
 
             if (!this.state.values.applicantType) {
                 errors.applicantType = 'Required';
+            } else if (this.state.values.applicantType === 'Business') {
+                if(!this.state.values.businessName) {
+                    errors.businessName = 'Required';
+                }
             }
 
             if (!this.state.values.loanType) {
@@ -329,6 +336,10 @@ class ApplyNow extends React.Component {
 
             if (!this.state.values.loanPurpose) {
                 errors.loanPurpose = 'Required';
+            }
+
+            if (!parseInt(this.state.values.loanAmount) > 0) {
+                errors.loanAmount = 'Please enter a non-zero value'
             }
         } else if (this.state.activeStep === 'user_choose_asset') {
 
@@ -396,13 +407,20 @@ class ApplyNow extends React.Component {
                         errors.yearAcquired = 'Required';
                     }
                 }
+
+                if (this.state.assetDetails.asset.name === 'Asset' 
+                && this.state.assetDetails.type === 'Other') {
+                    if(!this.state.assetDetails.nameOfType) {
+                        errors.nameOfType = 'Required';
+                    }
+                }
             }
 
-            if (!this.state.assetDetails.desiredAmount) {
-                errors.desiredAmount = 'Required';
-            } else if (!this.state.assetDetails.desiredAmount > 0 
-                || this.state.assetDetails.desiredAmount < 0) {
-                errors.desiredAmount = 'Please enter a valid Loan Amount';
+            if (!this.state.assetDetails.estimatedValue) {
+                errors.estimatedValue = 'Required';
+            } else if (!this.state.assetDetails.estimatedValue > 0 
+                || this.state.assetDetails.estimatedValue < 0) {
+                errors.estimatedValue = 'Please enter a valid Loan Amount';
             }
 
             // attaching files for assets is not mandatory
@@ -593,6 +611,27 @@ class ApplyNow extends React.Component {
                                                 )}
                                             </SemForm.Field>
                                             <SemForm.Field required>
+                                                <label>Loan Amount (in Dollars)</label>
+                                                <input
+                                                    id="loanAmount"
+                                                    placeholder="Loan Amount"
+                                                    type="text"
+                                                    value={this.state.values.loanAmount}
+                                                    onChange={this.handleChange}
+                                                    onBlur={this.handleBlur}
+                                                    style={
+                                                        errors.loanAmount && this.state.touched.loanAmount ? (
+                                                            {borderColor: 'red'}
+                                                        ) : ({})
+                                                    }
+                                                />
+                                                {errors.loanAmount && this.state.touched.loanAmount && (
+                                                    <div className="input-feedback">{errors.loanAmount}</div>
+                                                )}
+                                            </SemForm.Field>
+                                        </SemForm.Group>
+                                        <SemForm.Group widths='equal'>
+                                        <SemForm.Field required>
                                                 <label>Purpose of Loan</label>
                                                 <input
                                                     id="loanPurpose"
@@ -611,6 +650,30 @@ class ApplyNow extends React.Component {
                                                     <div className="input-feedback">{errors.loanPurpose}</div>
                                                 )}
                                             </SemForm.Field>
+
+                                            {
+                                                this.state.values.applicantType === 'Business' ? (
+                                                    <SemForm.Field required>
+                                                        <label>Business Name</label>
+                                                        <input
+                                                            id="businessName"
+                                                            placeholder="Registered Name of your Business"
+                                                            type="text"
+                                                            value={this.state.values.businessName}
+                                                            onChange={this.handleChange}
+                                                            onBlur={this.handleBlur}
+                                                            style={
+                                                                errors.businessName && this.state.touched.businessName ? (
+                                                                    {borderColor: 'red'}
+                                                                ) : ({})
+                                                            }
+                                                        />
+                                                        {errors.businessName && this.state.touched.businessName && (
+                                                            <div className="input-feedback">{errors.businessName}</div>
+                                                        )}
+                                                    </SemForm.Field>
+                                                ) : null
+                                            }
                                         </SemForm.Group>
                                     </SemForm>
                                 </Col>
@@ -641,7 +704,7 @@ class ApplyNow extends React.Component {
                                                         </Header.Subheader>
                                                     </Header>
                                                     <Row>
-                                                        <Col sm="3" md="3">
+                                                        <Col sm="4" md="4">
                                                             <Header as='h5'>
                                                                 <Header.Content>
                                                                     Tell us about your Asset
@@ -654,7 +717,7 @@ class ApplyNow extends React.Component {
                                                             <Image src={this.state.assetDetails.asset.src} />
                                                         </Col>
 
-                                                        <Col sm="5" md="5">
+                                                        <Col sm="4" md="4">
                                                             <SemForm>
                                                                 <SemForm.Field required>
                                                                     <label>Type of {this.state.assetDetails.asset.name}</label>
@@ -680,6 +743,28 @@ class ApplyNow extends React.Component {
                                                                         <div className="input-feedback">{errors.type}</div>
                                                                     )}
                                                                 </SemForm.Field>
+
+                                                                {
+                                                                    this.state.assetDetails.asset.name === 'Asset' && this.state.assetDetails.type === 'Other' ? (
+                                                                        <SemForm.Field>
+                                                                            <input id="nameOfType"
+                                                                                        value={this.state.assetDetails.nameOfType}
+                                                                                        onChange={this.handleAssetDetailsChange}
+                                                                                        onBlur={this.handleBlur}
+                                                                                        placeholder={`Please name your Asset`}
+                                                                                        className={
+                                                                                            errors.nameOfType && this.state.touched.nameOfType ? (
+                                                                                                'text-input error'
+                                                                                            ) : (
+                                                                                                'text-input'
+                                                                                            )
+                                                                                        }/>
+                                                                            {errors.nameOfType && this.state.touched.nameOfType && (
+                                                                                <div className="input-feedback">{errors.nameOfType}</div>
+                                                                            )}
+                                                                        </SemForm.Field>
+                                                                    ) : null
+                                                                }
 
                                                                 <SemForm.Field required>
                                                                     <label>Age in Years</label>
@@ -762,12 +847,12 @@ class ApplyNow extends React.Component {
                                                         <Col sm="4" md="4">
                                                             <SemForm>
                                                                 <SemForm.Field required>
-                                                                    <label>Name of {this.state.assetDetails.asset.name}</label>
+                                                                    <label>Description of {this.state.assetDetails.asset.name}</label>
                                                                     <input id="nameOfAsset"
                                                                               value={this.state.assetDetails.nameOfAsset}
                                                                               onChange={this.handleAssetDetailsChange}
                                                                               onBlur={this.handleBlur}
-                                                                              placeholder={`Please name your ${this.state.assetDetails.asset.name}`}
+                                                                              placeholder={`Tell us about your ${this.state.assetDetails.asset.name}`}
                                                                               className={
                                                                                   errors.nameOfAsset && this.state.touched.nameOfAsset ? (
                                                                                       'text-input error'
@@ -994,23 +1079,23 @@ class ApplyNow extends React.Component {
                                                                 }
 
                                                                 <SemForm.Field required>
-                                                                    <label>Desired Amount (in Dollars)</label>
+                                                                    <label>Estimated Value (in Dollars)</label>
                                                                     <input
-                                                                        id="desiredAmount"
+                                                                        id="estimatedValue"
                                                                         type="number"
                                                                         onChange={this.handleAssetDetailsChange}
                                                                         onBlur={this.handleBlur}
-                                                                        value={this.state.assetDetails.desiredAmount}
+                                                                        value={this.state.assetDetails.estimatedValue}
                                                                         placeholder='Loan Amount (in Dollars)'
                                                                         className={
-                                                                            errors.desiredAmount && this.state.touched.desiredAmount ? (
+                                                                            errors.estimatedValue && this.state.touched.estimatedValue ? (
                                                                                 'text-input error'
                                                                             ) : (
                                                                                 'text-input'
                                                                             )
                                                                         }/>
-                                                                    {errors.desiredAmount && this.state.touched.desiredAmount && (
-                                                                        <div className="input-feedback">{errors.desiredAmount}</div>
+                                                                    {errors.estimatedValue && this.state.touched.estimatedValue && (
+                                                                        <div className="input-feedback">{errors.estimatedValue}</div>
                                                                     )}
                                                                 </SemForm.Field>
                                                                 <SemForm.Field required>
@@ -1053,10 +1138,6 @@ class ApplyNow extends React.Component {
                                             </Header>
                                             <Row>
                                                 <Col sm="3" md="3">
-                                                    <Image src={this.state.assetDetails.asset.src} />
-                                                </Col>
-
-                                                <Col sm="4" md="4">
                                                     <Header as='h4'>
                                                         <Header.Content>
                                                             Review Asset Information
@@ -1065,7 +1146,10 @@ class ApplyNow extends React.Component {
                                                             Please verify the asset information provided by you.
                                                         </Header.Subheader>
                                                     </Header>
+                                                    <Image src={this.state.assetDetails.asset.src} />
+                                                </Col>
 
+                                                <Col sm="4" md="4">
                                                     <Header
                                                         as='h6'
                                                         content='Name'
@@ -1080,14 +1164,8 @@ class ApplyNow extends React.Component {
 
                                                     <Header
                                                         as='h6'
-                                                        content={`${this.state.assetDetails.asset.name} Brand`}
-                                                        subheader={this.state.assetDetails.brand}
-                                                    />
-
-                                                    <Header
-                                                        as='h6'
-                                                        content='Desired Amount'
-                                                        subheader={this.state.assetDetails.desiredAmount}
+                                                        content='Estimated Value'
+                                                        subheader={this.state.assetDetails.estimatedValue}
                                                     />
 
                                                     <Header

@@ -12,8 +12,8 @@ import ProtectedRoute from './utilities/ProtectedRoute';
 const Routes = (props) => (
     <Router {...props}>
         <Switch>
-            <ProtectedRoute path="/applications" component={ApplicationsTable} />
-            {/* <Route exact path="/applications" component={ApplicationsTable} /> */}
+            {/* <ProtectedRoute path="/applications" component={ApplicationsTable} /> */}
+            <Route exact path="/applications" component={ApplicationsTable} />
             {/* <Route exact path="/apply-now-template" component={ApplyNowTemplate}/> */}
             <Route exact path="/apply-now" component={ApplyNowVanilla}/>
             <Route exact path="/login" component={Login}/>

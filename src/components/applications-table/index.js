@@ -299,7 +299,9 @@ class ApplicationsTable extends React.Component {
                                                         </ul>
                                                     </Table.Cell>
                                                     <Table.Cell>
-                                                    <Button circular primary icon='download' onClick={this.downloadApplicationDocuments} />
+                                                        <Button circular primary icon='download' 
+                                                                disabled={this.state.applicationDetails.assetDetails.files.length === 0} 
+                                                                onClick={this.downloadApplicationDocuments} />
                                                     </Table.Cell>
                                                 </Table.Row>
                                             </Table.Body>

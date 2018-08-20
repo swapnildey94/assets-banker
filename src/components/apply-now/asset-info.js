@@ -146,5 +146,19 @@ export const AssetInfo = [
             {text: 'Ring', value: 'Ring'},
             {text: 'Studs', value: 'Studs'},
             {text: 'Tiara', value: 'Tiara'}]
+    }, {
+        src: 'http://www.other-themovie.com/other_logo_03.png',
+        thumbnail: 'http://www.other-themovie.com/other_logo_03.png',
+        thumbnailWidth: 162,
+        thumbnailHeight: 116,
+        name: 'Asset',
+        ageInYears: ageInYears,
+        workingCondition: workingCondition,
+        generalCondition: generalCondition,
+        types: [
+            {text: 'Car', value: 'Car'},
+            {text: 'Artwork', value: 'Artwork'},
+            {text: 'Wine', value: 'Wine'},
+            {text: 'Other', value: 'Other'}]
     }
 ];
