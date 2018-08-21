@@ -1,8 +1,8 @@
 {
     "Template": {
       "TemplateName": "AssetsBankerLoanApplicationInternal",
-      "SubjectPart": "Assets Banker Loan Application: {{applicationId}}!",
-      "HtmlPart": "<h1>Hello {{contact.fullName}},</h1><p>Thank you for applying for {{contact.loanType}}.</p>",
-      "TextPart": "Dear {{contact.fullName}},\r\nThank you for applying for {{contact.loanType}}."
+      "SubjectPart": "New Loan Application from {{contact.fullName}}",
+      "HtmlPart": "You have received a loan application from {{contact.fullName}}. The application detail is as follows:\r\nApplicant name: {{contact.fullName}}\r\nApplicant email: {{contact.email}}\r\nApplicant phone: {{contact.mobileNumber}}\r\nDesired Loan Amount: {{contact.loanAmount}}\r\nAsset for Loan: {{assetDetails.name}}\r\nAsset estimated value: {{assetDetails.estimatedValue}}\r\nYou can check the details of this loan application at internal.assetbanker.com.\r\nThanks,\r\nApplication Admin",
+      "TextPart": "You have received a loan application from {{contact.fullName}}. The application detail is as follows:\r\nApplicant name: {{contact.fullName}}\r\nApplicant email: {{contact.email}}\r\nApplicant phone: {{contact.mobileNumber}}\r\nDesired Loan Amount: {{contact.loanAmount}}\r\nAsset for Loan: {{assetDetails.name}}\r\nAsset estimated value: {{assetDetails.estimatedValue}}\r\nYou can check the details of this loan application at internal.assetbanker.com.\r\nThanks,\r\nApplication Admin"
     }
   }
