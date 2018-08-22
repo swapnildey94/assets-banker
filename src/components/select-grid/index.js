@@ -57,7 +57,7 @@ class SelectGrid extends React.Component {
                                         <Grid.Column key={key}
                                                      style={{margin: '2px', cursor: 'pointer'}}
                                                      onClick={() => this.selectAsset(asset)}>
-                                            <Image src={asset.src} size='medium' />
+                                            <Image src={asset.src} size='medium' style={{height: '200px'}} />
                                         </Grid.Column>
                                     )
                                 })
