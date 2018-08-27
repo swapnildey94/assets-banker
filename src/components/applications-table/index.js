@@ -271,9 +271,9 @@ class ApplicationsTable extends React.Component {
                                             <Table.Header>
                                                 <Table.Row>
                                                     <Table.HeaderCell>Type</Table.HeaderCell>
-                                                    <Table.HeaderCell>Brand</Table.HeaderCell>
                                                     <Table.HeaderCell>Category</Table.HeaderCell>
                                                     <Table.HeaderCell>Description</Table.HeaderCell>
+                                                    <Table.HeaderCell>Estimated Value</Table.HeaderCell>
                                                     <Table.HeaderCell>Uploaded Documents</Table.HeaderCell>
                                                     <Table.HeaderCell>Download</Table.HeaderCell>
                                                 </Table.Row>
@@ -284,9 +284,9 @@ class ApplicationsTable extends React.Component {
                                                     <Table.Cell>
                                                         <Label ribbon color='blue'>{this.state.applicationDetails.assetDetails.name}</Label>
                                                     </Table.Cell>
-                                                    <Table.Cell>{this.state.applicationDetails.assetDetails.brand}</Table.Cell>
                                                     <Table.Cell>{this.state.applicationDetails.assetDetails.type}</Table.Cell>
-                                                    <Table.Cell>{this.state.applicationDetails.assetDetails.description}</Table.Cell>
+                                                    <Table.Cell>{this.state.applicationDetails.assetDetails.assetDescription}</Table.Cell>
+                                                    <Table.Cell>{this.state.applicationDetails.assetDetails.estimatedValue}</Table.Cell>
                                                     <Table.Cell>
                                                         <ul>
                                                             {
@@ -323,7 +323,7 @@ class ApplicationsTable extends React.Component {
                 <Row style={{marginTop: '30px'}}>
                     <Col sm={{size: 2}} />
                     <Col sm={{size: 2}}>
-                        <Form.Field>
+                        {/* <Form.Field>
                             <select id="viewLoanStatus"
                                     onChange={this.handleChange}
                                     value={this.state.viewLoanStatus}>
@@ -332,7 +332,7 @@ class ApplicationsTable extends React.Component {
                                 <option value="APPROVED">Approved</option>
                                 <option value="REJECTED">Rejected</option>
                             </select>
-                        </Form.Field>
+                        </Form.Field> */}
                     </Col>
                     <Col sm={{size: 4}}>
                         <Header as='h2' textAlign={'center'}>

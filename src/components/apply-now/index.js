@@ -72,7 +72,7 @@ class ApplyNow extends React.Component {
                 name: '',
                 type: '',
                 nameOfType: '',
-                nameOfAsset: '',
+                assetDescription: '',
                 ageInYears: '',
                 workingCondition: '',
                 generalCondition: '',
@@ -174,7 +174,6 @@ class ApplyNow extends React.Component {
         this.createApplication(applicationId, this.state.values, assetDetails);
 
         this.nextStep();
-
     };
 
     createApplication = (applicationId, contact, assetDetails) => {
@@ -201,12 +200,16 @@ class ApplyNow extends React.Component {
 
         assetInfo.name = assetDetails.asset.name;
         assetInfo.files = files;
+        assetInfo = _.omit(assetInfo, ['asset']);
+        assetInfo = _.pickBy(assetInfo, _.identity);
 
         const payload = {
             applicationId: applicationId,
-            contact: contact,
+            contact: _.pickBy(contact, _.identity),
             assetDetails: assetInfo
         };
+
+        console.log(JSON.stringify(payload));
 
         axios.post('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/DEV/applications', payload)
           .then((response) => {
@@ -220,6 +223,7 @@ class ApplyNow extends React.Component {
             this.setState({
                 loading: false
             });
+            this.prevStep();
           });
     };
 
@@ -347,8 +351,8 @@ class ApplyNow extends React.Component {
                 errors.type = 'Required';
             }
 
-            if (!this.state.assetDetails.nameOfAsset) {
-                errors.nameOfAsset = 'Required';
+            if (!this.state.assetDetails.assetDescription) {
+                errors.assetDescription = 'Required';
             }
 
             if (!this.state.assetDetails.ageInYears) {
@@ -848,20 +852,20 @@ class ApplyNow extends React.Component {
                                                             <SemForm>
                                                                 <SemForm.Field required>
                                                                     <label>Description of {this.state.assetDetails.asset.name}</label>
-                                                                    <input id="nameOfAsset"
-                                                                              value={this.state.assetDetails.nameOfAsset}
+                                                                    <input id="assetDescription"
+                                                                              value={this.state.assetDetails.assetDescription}
                                                                               onChange={this.handleAssetDetailsChange}
                                                                               onBlur={this.handleBlur}
                                                                               placeholder={`Tell us about your ${this.state.assetDetails.asset.name}`}
                                                                               className={
-                                                                                  errors.nameOfAsset && this.state.touched.nameOfAsset ? (
+                                                                                  errors.assetDescription && this.state.touched.assetDescription ? (
                                                                                       'text-input error'
                                                                                   ) : (
                                                                                       'text-input'
                                                                                   )
                                                                               }/>
-                                                                    {errors.nameOfAsset && this.state.touched.nameOfAsset && (
-                                                                        <div className="input-feedback">{errors.nameOfAsset}</div>
+                                                                    {errors.assetDescription && this.state.touched.assetDescription && (
+                                                                        <div className="input-feedback">{errors.assetDescription}</div>
                                                                     )}
                                                                 </SemForm.Field>
 
@@ -1171,7 +1175,7 @@ class ApplyNow extends React.Component {
                                                     <Header
                                                         as='h6'
                                                         content='Description'
-                                                        subheader={this.state.assetDetails.description}
+                                                        subheader={this.state.assetDetails.assetDescription}
                                                     />
 
                                                     <Header
@@ -1265,13 +1269,13 @@ class ApplyNow extends React.Component {
                                                 </Header>
 
                                                 <Row style={{marginTop: '50px'}}>
-                                                    <Col sm="6" md="5">
-                                                        <Header as='h2' textAlign={'center'} style={{marginTop: '100px'}}>
+                                                    <Col sm="4" md="4">
+                                                        {/* <Header as='h2' textAlign={'center'} style={{marginTop: '100px'}}>
                                                             <Header.Content>Application ID</Header.Content>
                                                             <Header.Subheader style={{marginTop: '20px', color: 'red'}}>{this.state.values.applicationId}</Header.Subheader>
-                                                        </Header>
+                                                        </Header> */}
                                                     </Col>
-                                                    <Col sm="6" md={{size: 6, offset: 1}}>
+                                                    <Col sm="6" md={{size: 6}}>
                                                         <Step.Group vertical ordered>
                                                             <Step>
                                                                 <Step.Content>

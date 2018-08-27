@@ -58,11 +58,11 @@ class Login extends React.Component {
                 {
                     ({login}) => (
                         <div>
-                            <Image
+                            {/* <Image
                                 src={'http://luxebanker.com/wp-content/uploads/2018/07/Asset-Banker-logo-03.jpg'}
                                 size='medium'
                                 centered
-                                style={{ marginTop: '20px', marginBottom: '20px' }} />
+                                style={{ marginTop: '20px', marginBottom: '20px' }} /> */}
                             <Container>
                                 <Grid columns='equal'>
                                     <Grid.Column />
