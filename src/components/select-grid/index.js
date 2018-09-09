@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid, Image} from 'semantic-ui-react';
+import {Header, Grid, Image} from 'semantic-ui-react';
 import {Container, Col, Row} from 'reactstrap';
 import Gallery from 'react-grid-gallery'
 import _ from 'lodash';
@@ -57,6 +57,11 @@ class SelectGrid extends React.Component {
                                         <Grid.Column key={key}
                                                      style={{margin: '2px', cursor: 'pointer'}}
                                                      onClick={() => this.selectAsset(asset)}>
+                                            <Header as='h4' textAlign={'center'} style={{marginTop: '10px'}}>
+                                                <Header.Content>
+                                                    {asset.name}
+                                                </Header.Content>
+                                            </Header>
                                             <Image src={asset.src} size='medium' style={{height: '200px'}} />
                                         </Grid.Column>
                                     )

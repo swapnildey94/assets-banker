@@ -10,10 +10,6 @@ const buttonMargin = {
 };
 
 class ApplyNowButton extends React.Component {
-    constructor(props) {
-        super(props);
-    };
-
     render() {
         return (
             <Button

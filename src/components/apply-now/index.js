@@ -97,7 +97,7 @@ class ApplyNow extends React.Component {
                 address: '',
                 loanType: '',
                 loanPurpose: '',
-                loanAmount: 0,
+                loanAmount: '',
                 businessName: ''
             },
             touched: {}
@@ -209,8 +209,6 @@ class ApplyNow extends React.Component {
             assetDetails: assetInfo
         };
 
-        console.log(JSON.stringify(payload));
-
         axios.post('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/DEV/applications', payload)
           .then((response) => {
             console.log(JSON.stringify(response));
@@ -265,6 +263,41 @@ class ApplyNow extends React.Component {
             values: { ...this.state.values, [event.target.id]: event.target.value },
         });
     };
+
+    handlePhoneChange = (event) => {
+        // 1
+        var input = event.target.value;
+        
+        // 2
+        input = input.replace(/[\W\s\._\-]+/g, '');
+        
+        // 3
+        var split = 3;
+        var chunk = [];
+        
+        for (var i = 0, len = input.length; i < len; i += split) {
+            split = ( i <= 3 && i <= 6 ) ? 3 : 4;
+            chunk.push( input.substr( i, split ) );
+        }
+        
+        // 4
+        this.setState({
+            values: { ...this.state.values, [event.target.id]: chunk.join("-") },
+        })
+    }
+
+    handleCurrencyValueChange = (event) => {
+        var loanAmount = event.target.value.replace(/[^a-zA-Z0-9]/g,'');
+        const currencyFormatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0
+        });
+        
+        this.setState({
+            values: { ...this.state.values, [event.target.id]: currencyFormatter.format(loanAmount) },
+        })
+    }
 
     handleAssetDetailsChange = (event) => {
         this.setState({
@@ -342,8 +375,8 @@ class ApplyNow extends React.Component {
                 errors.loanPurpose = 'Required';
             }
 
-            if (!parseInt(this.state.values.loanAmount) > 0) {
-                errors.loanAmount = 'Please enter a non-zero value'
+            if (this.state.values.loanAmount === '') {
+                errors.loanAmount = 'Please enter your loan value'
             }
         } else if (this.state.activeStep === 'user_choose_asset') {
 
@@ -556,7 +589,7 @@ class ApplyNow extends React.Component {
                                                     placeholder="123-123-1234"
                                                     type="text"
                                                     value={this.state.values.mobileNumber}
-                                                    onChange={this.handleChange}
+                                                    onChange={this.handlePhoneChange}
                                                     onBlur={this.handleBlur}
                                                     style={
                                                         errors.mobileNumber && this.state.touched.mobileNumber ? (
@@ -621,7 +654,7 @@ class ApplyNow extends React.Component {
                                                     placeholder="Loan Amount"
                                                     type="text"
                                                     value={this.state.values.loanAmount}
-                                                    onChange={this.handleChange}
+                                                    onChange={this.handleCurrencyValueChange}
                                                     onBlur={this.handleBlur}
                                                     style={
                                                         errors.loanAmount && this.state.touched.loanAmount ? (

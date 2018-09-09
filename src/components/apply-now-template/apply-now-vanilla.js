@@ -5,6 +5,11 @@ import './css/style.css';
 import './css/fontello.css';
 import ApplyNow from "../apply-now";
 
+const assetBackground = {
+    background: 'url(\'http://assetbanker.com/wp-content/uploads/2018/09/advt-new.jpg\') no-repeat center center fixed',
+    backgroundSize: 'cover'
+};
+
 class ApplyNowVanilla extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +18,7 @@ class ApplyNowVanilla extends React.Component {
     render() {
 
         return (
-            <div>
+            <div style={assetBackground}>
                 <div className="container" style={{paddingTop: '20px'}}>
                     <div className="row">
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -24,8 +29,9 @@ class ApplyNowVanilla extends React.Component {
                                             className="offset-xl-2 col-xl-8 offset-lg-2 col-lg-8 col-md-12 col-sm-12 col-12">
                                             <div className="mb60  section-title text-center  ">
                                                 {/* section title start*/}
-                                                <h1>Get In Touch</h1>
-                                                <p>Reach out to us &amp; we will respond as soon as we can.</p>
+                                                <h1>Apply Now with No Obligation</h1>
+                                                <p>Use your luxury asset for a short term loan at the best interest rate. 
+                                                    <br/>Our loan officer will contact you within 2 Business days.</p>
                                             </div>
                                         </div>
 

@@ -63,7 +63,7 @@ class Login extends React.Component {
                                 size='medium'
                                 centered
                                 style={{ marginTop: '20px', marginBottom: '20px' }} /> */}
-                            <Container>
+                            <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
                                 <Grid columns='equal'>
                                     <Grid.Column />
                                     <Grid.Column width={8}>
