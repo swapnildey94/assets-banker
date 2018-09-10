@@ -10,6 +10,21 @@ const assetBackground = {
     backgroundSize: 'cover'
 };
 
+const buttonMargin = {
+    margin: '2px'
+};
+
+const logoStyle = {
+    width: 'auto',
+    maxWidth: '100%',
+    height: 'auto',
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    lineHeight: 'normal',
+    verticalAlign: 'middle'
+};
+
 class ApplyNowVanilla extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +34,31 @@ class ApplyNowVanilla extends React.Component {
 
         return (
             <div style={assetBackground}>
-                <div className="container" style={{paddingTop: '20px'}}>
+                <div className="header-2" style={{backgroundColor: '#000', paddingBottom: '20px'}}>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                {/* logo */}
+                                <div className="logo">
+                                    <a href="http://assetbanker.com/">
+                                        <img src="http://assetbanker.com/wp-content/uploads/2018/08/asset-banker-white-21.png"
+                                                alt="Borrow - Loan Company Website Template"
+                                                style={logoStyle}
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                            {/* logo */}
+                            <div
+                                className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 text-right d-none d-xl-block d-lg-block ">
+                                <div className="header-action">
+                                    <a href="http://assetbanker.com/#Services" className="btn btn-primary" style={buttonMargin}>Services</a>
+                                    <a href="http://assetbanker.com/#Contact" className="btn btn-default " style={buttonMargin}>Contact Us</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="container" style={{paddingTop: '20px', marginTop: '20px'}}>
                     <div className="row">
                         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div className="wrapper-content bg-white pinside40">

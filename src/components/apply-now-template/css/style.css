@@ -2,59 +2,6 @@
 
 /* CSS Document */
 
-/*
-
- Template Name : Borrow - A Loan Company Website Template
- Author : Jitu Chauhan;
- Version: 1.0.5;
-
-+ General css 
-+ Space css
-+ Background & Block color 
-+ Buttons
-+ Input Form
-+ Bullet
-+ Icon
-+ Navigation CSS
-
-+ HOME
-  - Home
-  - Home-1
-  - Home-2
-+ LOAN PRODUCT
-  - Loan Image Listing
-  - Loan Icon Listing
-  - Car Loan Single
-  - Personal Loan Single
-  - Home Loan Single
-  - Education Loan Single
-+ ABOUT US 
-  - About us
-  - Team
-+ BLOG
-  - Blog Listing
-  - Blog Single
-  - Two Column Masonry
-  - Three Column Masonry
-+ FEATURES
-  - Compare Loan
-  - Faq page
-  - Testimonial
-  - 404 Error
-    - Gallery
-      - Filterable Gallery 2 column
-      - Filterable Gallery 3 column
-      - Masonry Gallery
-      - Zoom Gallery
-    - Shortcodes
-      - Tab
-      - Accordion
-      - Alert       
-
-- CONTACT US
-    
-*/
-
 .ui.apply-now.buttons .apply-now.button, .ui.apply-now.button {
     font-size: 14px;
     border-radius: 2px;

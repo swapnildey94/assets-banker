@@ -85,7 +85,7 @@ class ApplyNow extends React.Component {
                 material: '',
                 originalStrap: '',
                 files: [],
-                estimatedValue: 0
+                estimatedValue: ''
             },
             assets: AssetInfo,
             values: {
@@ -186,15 +186,6 @@ class ApplyNow extends React.Component {
             this.uploadFileToS3(applicationId, assetDetails.files[i]).then();
             files.push(applicationId + "/" + assetDetails.files[i].name);
         }
-        
-        /* const assetInfo = {
-            name: assetDetails.name,
-            type: assetDetails.type,
-            brand: assetDetails.brand,
-            description: assetDetails.description,
-            files: [],
-            estimatedValue: assetDetails.estimatedValue
-        }; */
 
         let assetInfo = _.cloneDeep(assetDetails);
 
@@ -288,22 +279,43 @@ class ApplyNow extends React.Component {
 
     handleCurrencyValueChange = (event) => {
         var loanAmount = event.target.value.replace(/[^a-zA-Z0-9]/g,'');
-        const currencyFormatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0
-        });
-        
-        this.setState({
-            values: { ...this.state.values, [event.target.id]: currencyFormatter.format(loanAmount) },
-        })
-    }
+
+        var checkNumbers = /^-?\d+\.?\d*$/;
+        if (checkNumbers.test(loanAmount)) {
+            const currencyFormatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            });
+            
+            this.setState({
+                values: { ...this.state.values, [event.target.id]: currencyFormatter.format(loanAmount) },
+            });
+        }
+    };
 
     handleAssetDetailsChange = (event) => {
         this.setState({
             assetDetails: { ...this.state.assetDetails, [event.target.id]: event.target.value}
         })
     };
+
+    handleAssetDetailsCurrencyValueChange = (event) => {
+        var loanAmount = event.target.value.replace(/[^a-zA-Z0-9]/g,'');
+
+        var checkNumbers = /^-?\d+\.?\d*$/;
+        if (checkNumbers.test(loanAmount)) {
+            const currencyFormatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            });
+            
+            this.setState({
+                assetDetails: { ...this.state.assetDetails, [event.target.id]: currencyFormatter.format(loanAmount) }
+            });
+        }
+    }
 
     handleFiles = (event) => {
       this.setState({
@@ -453,11 +465,8 @@ class ApplyNow extends React.Component {
                 }
             }
 
-            if (!this.state.assetDetails.estimatedValue) {
+            if (this.state.assetDetails.estimatedValue === '') {
                 errors.estimatedValue = 'Required';
-            } else if (!this.state.assetDetails.estimatedValue > 0 
-                || this.state.assetDetails.estimatedValue < 0) {
-                errors.estimatedValue = 'Please enter a valid Loan Amount';
             }
 
             // attaching files for assets is not mandatory
@@ -617,7 +626,6 @@ class ApplyNow extends React.Component {
                                                     <option value="">Select</option>
                                                     <option value="Bridge Loan">Bridge Loan</option>
                                                     <option value="Sale Advance Loan">Sale Advance Loan</option>
-                                                    <option value="Prepaid Debit Card">Prepaid Debit Card</option>
                                                     <option value="Line of Credit">Line of Credit</option>
                                                 </select>
                                                 {errors.loanType && this.state.touched.loanType && (
@@ -1119,8 +1127,8 @@ class ApplyNow extends React.Component {
                                                                     <label>Estimated Value (in Dollars)</label>
                                                                     <input
                                                                         id="estimatedValue"
-                                                                        type="number"
-                                                                        onChange={this.handleAssetDetailsChange}
+                                                                        type="text"
+                                                                        onChange={this.handleAssetDetailsCurrencyValueChange}
                                                                         onBlur={this.handleBlur}
                                                                         value={this.state.assetDetails.estimatedValue}
                                                                         placeholder='Loan Amount (in Dollars)'
