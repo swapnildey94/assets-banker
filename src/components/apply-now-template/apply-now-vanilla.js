@@ -113,7 +113,7 @@ class ApplyNowVanilla extends React.Component {
                                             <div className="mb40"><i className="icon-letter icon-2x icon-default"/>
                                             </div>
                                             <h2 className="capital-title">Email Address</h2>
-                                            <h2 className="text-big" style={{paddingBottom: '10px'}}>info@assetbanker.com</h2>
+                                            <p>info@assetbanker.com</p>
                                         </div>
                                     </div>
                                 </div>

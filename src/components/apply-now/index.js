@@ -345,6 +345,8 @@ class ApplyNow extends React.Component {
 
             if (!this.state.values.fullName) {
                 errors.fullName = 'Required';
+            } else if (this.state.values.fullName.length > 35) {
+                errors.fullName = 'Too Long';
             }
 
             if (!this.state.values.mobileNumber) {
@@ -352,7 +354,7 @@ class ApplyNow extends React.Component {
             } else if (
                 !/\d{3}[\-]\d{3}[\-]\d{4}/.test(
                     this.state.values.mobileNumber
-                )
+                ) || this.state.values.mobileNumber.length > 12
             ) {
                 errors.mobileNumber = 'Invalid Mobile Number'
             }
@@ -362,13 +364,15 @@ class ApplyNow extends React.Component {
             } else if (
                 !/(\d{5}([\-]\d{4})?)/.test(
                     this.state.values.zipCode
-                )
+                ) || this.state.values.zipCode.length > 5
             ) {
                 errors.zipCode = 'Invalid Zip Code'
             }
 
             if (!this.state.values.address) {
                 errors.address = 'Required';
+            } else if (this.state.values.address.length > 80) {
+                errors.fullName = 'Too Long';
             }
 
             if (!this.state.values.applicantType) {
@@ -385,6 +389,8 @@ class ApplyNow extends React.Component {
 
             if (!this.state.values.loanPurpose) {
                 errors.loanPurpose = 'Required';
+            } else if (this.state.values.loanPurpose.length > 120) {
+                errors.fullName = 'Too Long';
             }
 
             if (this.state.values.loanAmount === '') {
@@ -398,10 +404,16 @@ class ApplyNow extends React.Component {
 
             if (!this.state.assetDetails.assetDescription) {
                 errors.assetDescription = 'Required';
+            } else if (this.state.assetDetails.description.length > 50) {
+                errors.assetDescription = 'Too Long';
             }
+            
+            var numberReg = new RegExp('^\d+$');
 
             if (!this.state.assetDetails.ageInYears) {
                 errors.ageInYears = 'Required';
+            } else if (numberReg.test(this.state.assetDetails.ageInYears)) {
+                errors.ageInYears = 'Numbers only';
             }
 
             if (!this.state.assetDetails.workingCondition) {
@@ -416,17 +428,25 @@ class ApplyNow extends React.Component {
                 if (this.state.assetDetails.asset.name === 'Gold') {
                     if (!this.state.assetDetails.weight) {
                         errors.weight = 'Required';
-                    }
-    
+                    } else if (!numberReg.test(this.state.assetDetails.yearAcquired)) {
+                        errors.weight = 'Numbers only';
+                    } 
+
                     if (!this.state.assetDetails.yearAcquired) {
                         errors.yearAcquired = 'Required';
+                    } else if (!numberReg.test(this.state.assetDetails.yearAcquired)) {
+                        errors.yearAcquired = 'Numbers only';
                     }
                 }
     
                 if (this.state.assetDetails.asset.name === 'Diamond') {
+                    var floatReg = new RegExp('^[0-9]*[.][0-9]+$');
+
                     if (!this.state.assetDetails.weight) {
                         errors.weight = 'Required';
-                    } else if (!(parseInt(this.state.assetDetails.weight) > -1 && parseInt(this.state.assetDetails.weight) < 6)) {
+                    } else if (!floatReg.test(this.state.assetDetails.weight)) {
+                        errors.weight = 'Please enter a valid number';
+                    } else if (!(parseFloat(this.state.assetDetails.weight) > -1 && parseFloat(this.state.assetDetails.weight) < 6)) {
                         errors.weight = 'Please enter a valid carat';
                     }
     
@@ -445,7 +465,7 @@ class ApplyNow extends React.Component {
 
                 if (this.state.assetDetails.asset.name === 'Watches') {
                     if (!this.state.assetDetails.modelNumber) {
-                        errors.weight = 'Required';
+                        errors.modelNumber = 'Required';
                     }
     
                     if (!this.state.assetDetails.material) {
@@ -963,7 +983,7 @@ class ApplyNow extends React.Component {
                                                                                         value={this.state.assetDetails.weight}
                                                                                         onChange={this.handleAssetDetailsChange}
                                                                                         onBlur={this.handleBlur}
-                                                                                        placeholder='Weight in carat (0-5)'
+                                                                                        placeholder='Weight in carat (0.0 - 5.0)'
                                                                                         className={
                                                                                             errors.weight && this.state.touched.weight ? (
                                                                                                 'text-input error'
