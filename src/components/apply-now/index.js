@@ -68,6 +68,7 @@ class ApplyNow extends React.Component {
                 }
             ],
             showAssetDetails: false,
+            assetDetailsUserConfirmation: false,
             assetDetails: {
                 name: '',
                 type: '',
@@ -329,6 +330,12 @@ class ApplyNow extends React.Component {
         });
     };
 
+    handleCheckbox = (event, data) => {
+        this.setState({
+            assetDetailsUserConfirmation: data.checked
+        });
+    }
+
     validate = () => {
         const errors = {};
 
@@ -371,7 +378,7 @@ class ApplyNow extends React.Component {
 
             if (!this.state.values.address) {
                 errors.address = 'Required';
-            } else if (this.state.values.address.length > 80) {
+            } else if (this.state.values.address.length > 60) {
                 errors.fullName = 'Too Long';
             }
 
@@ -404,11 +411,12 @@ class ApplyNow extends React.Component {
 
             if (!this.state.assetDetails.assetDescription) {
                 errors.assetDescription = 'Required';
-            } else if (this.state.assetDetails.description.length > 50) {
+            } else if (this.state.assetDetails.assetDescription.length > 50) {
                 errors.assetDescription = 'Too Long';
             }
             
             var numberReg = new RegExp('^\d+$');
+            var yearAcqReg = new RegExp('^\d{4}$');
 
             if (!this.state.assetDetails.ageInYears) {
                 errors.ageInYears = 'Required';
@@ -424,23 +432,27 @@ class ApplyNow extends React.Component {
                 errors.generalCondition = 'Required';
             }
 
+            if (!this.state.assetDetailsUserConfirmation) {
+                errors.assetDetailsUserConfirmation = 'Please acknowledge';
+            }
+
             if (this.state.assetDetails.asset) {
                 if (this.state.assetDetails.asset.name === 'Gold') {
                     if (!this.state.assetDetails.weight) {
                         errors.weight = 'Required';
-                    } else if (!numberReg.test(this.state.assetDetails.yearAcquired)) {
+                    } else if (!numberReg.test(this.state.assetDetails.weight)) {
                         errors.weight = 'Numbers only';
                     } 
 
                     if (!this.state.assetDetails.yearAcquired) {
                         errors.yearAcquired = 'Required';
-                    } else if (!numberReg.test(this.state.assetDetails.yearAcquired)) {
+                    } else if (!yearAcqReg.test(this.state.assetDetails.yearAcquired)) {
                         errors.yearAcquired = 'Numbers only';
                     }
                 }
     
                 if (this.state.assetDetails.asset.name === 'Diamond') {
-                    var floatReg = new RegExp('^[0-9]*[.][0-9]+$');
+                    var floatReg = new RegExp('^[0-9]*[.]*[0-9]+$');
 
                     if (!this.state.assetDetails.weight) {
                         errors.weight = 'Required';
@@ -469,11 +481,11 @@ class ApplyNow extends React.Component {
                     }
     
                     if (!this.state.assetDetails.material) {
-                        errors.yearAcquired = 'Required';
+                        errors.material = 'Required';
                     }
 
                     if (!this.state.assetDetails.originalStrap) {
-                        errors.yearAcquired = 'Required';
+                        errors.originalStrap = 'Required';
                     }
                 }
 
@@ -521,7 +533,7 @@ class ApplyNow extends React.Component {
 
                 <Row style={{marginTop: '30px'}}>
                     <Col sm={{size: 12}}>
-                        <Step.Group items={this.state.steps} style={{marginBottom: '20px'}}/>
+                        <Step.Group items={this.state.steps} style={{marginBottom: '20px'}} stackable='tablet'/>
                     </Col>
                 </Row>
 
@@ -594,7 +606,7 @@ class ApplyNow extends React.Component {
                                                 <label>Enter your Zip Code</label>
                                                 <input
                                                     id="zipCode"
-                                                    placeholder="US ZipCode"
+                                                    placeholder="US Zip Code"
                                                     type="text"
                                                     value={this.state.values.zipCode}
                                                     onChange={this.handleChange}
@@ -1174,7 +1186,9 @@ class ApplyNow extends React.Component {
                                                                         <div className="input-feedback">{errors.files}</div>
                                                                     )}
                                                                 </SemForm.Field>
-                                                                <SemForm.Checkbox label='I confirm that above information is accurate to the best of my knowledge' />
+                                                                <SemForm.Checkbox 
+                                                                            label='I confirm that above information is accurate to the best of my knowledge'
+                                                                            onChange={this.handleCheckbox} />
                                                             </SemForm>
                                                         </Col>
                                                     </Row>
