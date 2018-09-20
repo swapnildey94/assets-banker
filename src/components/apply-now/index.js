@@ -415,8 +415,8 @@ class ApplyNow extends React.Component {
                 errors.assetDescription = 'Too Long';
             }
             
-            var numberReg = new RegExp('^\d+$');
-            var yearAcqReg = new RegExp('^\d{4}$');
+            var numberReg = new RegExp('^[0-9]+$');
+            var yearAcqReg = new RegExp('^[0-9]{4}$');
 
             if (!this.state.assetDetails.ageInYears) {
                 errors.ageInYears = 'Required';
@@ -437,17 +437,20 @@ class ApplyNow extends React.Component {
             }
 
             if (this.state.assetDetails.asset) {
-                if (this.state.assetDetails.asset.name === 'Gold') {
+                if (this.state.assetDetails.asset.name === 'Gold' 
+                || this.state.assetDetails.asset.name === 'Silver') {
+                    var floatReg = new RegExp('^[0-9]*[.]*[0-9]+$');
+
                     if (!this.state.assetDetails.weight) {
                         errors.weight = 'Required';
-                    } else if (!numberReg.test(this.state.assetDetails.weight)) {
+                    } else if (!floatReg.test(this.state.assetDetails.weight)) {
                         errors.weight = 'Numbers only';
                     } 
 
                     if (!this.state.assetDetails.yearAcquired) {
                         errors.yearAcquired = 'Required';
                     } else if (!yearAcqReg.test(this.state.assetDetails.yearAcquired)) {
-                        errors.yearAcquired = 'Numbers only';
+                        errors.yearAcquired = 'invalid year';
                     }
                 }
     
