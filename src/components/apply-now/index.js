@@ -29,6 +29,7 @@ class ApplyNow extends React.Component {
             key: 0,
             loading: false,
             loadingMessage: 'Loading',
+            failureMessage: '',
             steps: [
                 {
                     "key": "user_contact_info",
@@ -163,7 +164,8 @@ class ApplyNow extends React.Component {
     submit = () => {
         this.setState({
             loading: true,
-            loadingMessage: 'Submitting Application. Please wait!'
+            loadingMessage: 'Submitting Application. Please wait!',
+            failureMessage: ''
         });
 
         const applicationId = uuid4();
@@ -211,7 +213,8 @@ class ApplyNow extends React.Component {
           .catch((error) => {
             console.log(JSON.stringify(error));
             this.setState({
-                loading: false
+                loading: false,
+                failureMessage: 'Failed to submit your Application. Please try again!'
             });
             this.prevStep();
           });
@@ -1207,9 +1210,11 @@ class ApplyNow extends React.Component {
                                 <Container style={containerPadding}>
                                     <Row>
                                         <Col sm="12" md={{size: 11, offset: 1}}>
-                                            {/*<Form schema={schema} uiSchema={uiSchema}>
-                                                <div/>
-                                            </Form>*/}
+                                            <Header as='h3' textAlign={'center'} color='red'>
+                                                <Header.Content>
+                                                    {this.state.failureMessage}
+                                                </Header.Content>
+                                            </Header>
                                             <Header as='h2' textAlign={'center'} dividing>
                                                 <Header.Content>
                                                     Review your Application
