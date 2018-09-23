@@ -1190,7 +1190,8 @@ class ApplyNow extends React.Component {
                                                                     )}
                                                                 </SemForm.Field>
                                                                 <SemForm.Checkbox 
-                                                                            label='I confirm that above information is accurate to the best of my knowledge'
+                                                                            label='Please check the box to enable the review screen and to confirm that 
+                                                                            the above information is accurate to the best of your knowledge.'
                                                                             onChange={this.handleCheckbox} />
                                                             </SemForm>
                                                         </Col>
