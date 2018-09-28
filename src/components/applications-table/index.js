@@ -7,7 +7,7 @@ import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver/FileSaver';
 import jsonexport from 'jsonexport/dist';
-import {Dimmer, Loader, Icon, Table, Label, Button, Header, Form} from 'semantic-ui-react';
+import {Dimmer, Loader, Icon, Table, Label, Button, Header, Dropdown} from 'semantic-ui-react';
 import {Container, Col, Row} from 'reactstrap';
 import 'semantic-ui-css/semantic.css';
 import '../../index.css';
@@ -26,7 +26,26 @@ class ApplicationsTable extends React.Component {
             application: [],
             applicationDetails: {},
             showDetails: false,
-            viewLoanStatus: 'Applied'
+            viewLoanStatus: 'Applied',
+            loanStatus: '',
+            loanStatusOptions: [
+                {
+                    value: 'open',
+                    text: 'Open'
+                }, {
+                    value: 'pending',
+                    text: 'Pending'
+                }, {
+                    value: 'funded',
+                    text: 'Funded'
+                }, {
+                    value: 'rejected',
+                    text: 'Rejected'
+                }, {
+                    value: 'closed',
+                    text: 'Closed'
+                }
+            ]
         };
     };
 
@@ -41,7 +60,7 @@ class ApplicationsTable extends React.Component {
     };
 
     loadApplications = () => {
-        axios.get('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/DEV/applications')
+        axios.get('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/PROD/applications')
           .then((response) => {
             this.setState({
                 loading: false,
@@ -68,6 +87,42 @@ class ApplicationsTable extends React.Component {
             applicationDetails: {},
             showDetails: false
         });
+    }
+
+    onStatusChange = (event, data) => {
+        this.setState({
+            loanStatus: data.value
+        });
+    }
+
+    changeLoanStatus = () => {
+        this.setState({
+            loading: true,
+            loadingMessage: 'Changing Loan Status'
+        });
+
+        let payload = {
+            applicationId: this.state.applicationDetails.applicationId,
+            applicationStatus: this.state.loanStatus.toUpperCase(),
+            commment: ""
+        };
+
+        axios.put('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/PROD/applications', payload)
+          .then((response) => {
+            console.log(JSON.stringify(response));
+            this.setState({
+                loading: false
+            });
+
+            this.loadApplications();
+            this.onBack();
+          })
+          .catch((error) => {
+            console.log(JSON.stringify(error));
+            this.setState({
+                loading: false
+            });
+          });
     }
 
     downloadApplicationDocuments = () => {
@@ -175,12 +230,22 @@ class ApplicationsTable extends React.Component {
                                         </Header>
                                     </Col>
                                     <Col sm="4" md="4">
-                                        <Button floated='right' icon labelPosition='left' negative size='small'>
-                                            <Icon name='cancel' /> Reject
-                                        </Button>
-                                        <Button floated='right' icon labelPosition='left' positive size='small'>
-                                            <Icon name='check' /> Approve
-                                        </Button>
+                                        <Row>
+                                            <Col sm="6" md="8">
+                                                <Dropdown
+                                                    placeholder="Change Loan Status"
+                                                    fluid 
+                                                    selection
+                                                    value={this.state.loanStatus}
+                                                    onChange={this.onStatusChange}
+                                                    options={this.state.loanStatusOptions} />
+                                            </Col>
+                                            <Col sm="6" md="4">
+                                                <Button floated='right' icon labelPosition='left' onClick={this.changeLoanStatus} primary size='small'>
+                                                    <Icon name='file' /> Action
+                                                </Button>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
 

@@ -203,7 +203,7 @@ class ApplyNow extends React.Component {
             assetDetails: assetInfo
         };
 
-        axios.post('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/DEV/applications', payload)
+        axios.post('https://raw0z9bmf4.execute-api.us-east-1.amazonaws.com/PROD/applications', payload)
           .then((response) => {
             console.log(JSON.stringify(response));
             this.setState({
